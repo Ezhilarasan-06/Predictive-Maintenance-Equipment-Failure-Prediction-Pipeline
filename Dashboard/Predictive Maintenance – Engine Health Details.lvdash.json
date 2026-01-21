@@ -1,0 +1,1414 @@
+{
+  "datasets": [
+    {
+      "name": "29b18707",
+      "displayName": "Engine Selector + Risk Table",
+      "queryLines": [
+        "SELECT\r\n",
+        "  engine_id,\r\n",
+        "  cycle,\r\n",
+        "  failure_probability,\r\n",
+        "  risk_level\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "WHERE engine_id = engine_id\r\n",
+        "ORDER BY cycle\r\n"
+      ]
+    },
+    {
+      "name": "f28a77bb",
+      "displayName": "Failure Probability Trend",
+      "queryLines": [
+        "SELECT\r\n",
+        "  cycle,\r\n",
+        "  engine_id,\r\n",
+        "  failure_probability\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "WHERE engine_id = engine_id\r\n",
+        "ORDER BY cycle\r\n"
+      ]
+    },
+    {
+      "name": "38d217ca",
+      "displayName": "Risk Level Timeline",
+      "queryLines": [
+        "SELECT\r\n",
+        "  cycle,\r\n",
+        "  risk_level\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "WHERE engine_id = engine_id\r\n",
+        "ORDER BY cycle\r\n"
+      ]
+    },
+    {
+      "name": "20f98b22",
+      "displayName": "TOTAL ENGINES MONITORED",
+      "queryLines": [
+        "\r\n",
+        "SELECT \r\n",
+        "  COUNT(DISTINCT engine_id) AS total_engines\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n"
+      ]
+    },
+    {
+      "name": "19001484",
+      "displayName": "HIGH RISK ENGINES (CRITICAL)",
+      "queryLines": [
+        "\r\n",
+        "SELECT \r\n",
+        "  COUNT(DISTINCT engine_id) AS high_risk_engines\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "WHERE risk_level = 'HIGH';\r\n"
+      ]
+    },
+    {
+      "name": "1fe2906a",
+      "displayName": "Engine Risk Distribution",
+      "queryLines": [
+        "\r\n",
+        "SELECT \r\n",
+        "  risk_level,\r\n",
+        "  COUNT(DISTINCT engine_id) AS engine_count\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "GROUP BY risk_level;\r\n"
+      ]
+    },
+    {
+      "name": "e584a161",
+      "displayName": "TOP 10 MOST RISKY ENGINES",
+      "queryLines": [
+        "SELECT \r\n",
+        "  engine_id,\r\n",
+        "  MAX(failure_probability) AS max_failure_probability,\r\n",
+        "  risk_level\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "GROUP BY engine_id, risk_level\r\n",
+        "ORDER BY max_failure_probability DESC\r\n",
+        "LIMIT 10;\r\n"
+      ]
+    },
+    {
+      "name": "1555ab7e",
+      "displayName": "Prediction Distribution",
+      "queryLines": [
+        "SELECT\r\n",
+        "  prediction,\r\n",
+        "  COUNT(*) AS prediction_count\r\n",
+        "FROM  predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "GROUP BY prediction\r\n",
+        "ORDER BY prediction;\r\n"
+      ]
+    },
+    {
+      "name": "1209ba2d",
+      "displayName": "Failure Probability Distribution",
+      "queryLines": [
+        "SELECT\r\n",
+        "  failure_probability\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n"
+      ]
+    },
+    {
+      "name": "c110be8f",
+      "displayName": "Risk Trend Over Cycles",
+      "queryLines": [
+        "SELECT\r\n",
+        "  cycle,\r\n",
+        "  AVG(failure_probability) AS avg_failure_probability\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "GROUP BY cycle\r\n",
+        "ORDER BY cycle;\r\n"
+      ]
+    },
+    {
+      "name": "67ca9613",
+      "displayName": "Risk Level Trend",
+      "queryLines": [
+        "SELECT\r\n",
+        "  cycle,\r\n",
+        "  risk_level,\r\n",
+        "  COUNT(*) AS engine_count\r\n",
+        "FROM predictive_cataglog.gold_layer.risk_score_table\r\n",
+        "GROUP BY cycle, risk_level\r\n",
+        "ORDER BY cycle;\r\n"
+      ]
+    },
+    {
+      "name": "2f700e78",
+      "displayName": "Prediction vs Actual",
+      "queryLines": [
+        "SELECT\r\n",
+        "  failure_label AS actual_label,\r\n",
+        "  prediction AS predicted_label,\r\n",
+        "  COUNT(*) AS count\r\n",
+        "FROM predictive_cataglog.gold_layer.feature_table\r\n",
+        "GROUP BY failure_label, prediction\r\n",
+        "ORDER BY failure_label, prediction;\r\n",
+        "\r\n",
+        "\r\n",
+        "\r\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "431c0662",
+      "displayName": "Predictive Maintenance – Engine Health Details",
+      "layout": [
+        {
+          "widget": {
+            "name": "engine-selector-risk-table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "29b18707",
+                  "fields": [
+                    {
+                      "name": "engine_id",
+                      "expression": "`engine_id`"
+                    },
+                    {
+                      "name": "cycle",
+                      "expression": "`cycle`"
+                    },
+                    {
+                      "name": "failure_probability",
+                      "expression": "`failure_probability`"
+                    },
+                    {
+                      "name": "risk_level",
+                      "expression": "`risk_level`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "engine_id",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100000,
+                    "title": "engine_id",
+                    "allowSearch": true,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "cycle",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100001,
+                    "title": "cycle",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "failure_probability",
+                    "numberFormat": "0.00",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "float",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100002,
+                    "title": "failure_probability",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "risk_level",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100003,
+                    "title": "risk_level",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  }
+                ]
+              },
+              "invisibleColumns": [],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": false,
+              "style": {
+                "fontColor": {
+                  "light": "#2D3D4B"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Engine Selector + Risk Table",
+                "headerAlignment": "center",
+                "description": "Shows how risk evolves over time"
+              }
+            },
+            "specExtensions": {
+              "widgetBorderColor": {
+                "light": "#BC5F5F"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "failure-probability-trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f28a77bb",
+                  "fields": [
+                    {
+                      "name": "cycle",
+                      "expression": "`cycle`"
+                    },
+                    {
+                      "name": "failure_probability",
+                      "expression": "`failure_probability`"
+                    },
+                    {
+                      "name": "engine_id",
+                      "expression": "`engine_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "forecast-line",
+              "encodings": {
+                "x": {
+                  "fieldName": "cycle",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "original": {
+                    "fieldName": "failure_probability"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "predictionLower": {
+                    "fieldName": "engine_id"
+                  }
+                }
+              },
+              "frame": {
+                "showDescription": true,
+                "showTitle": true,
+                "title": "Failure Probability Trend",
+                "description": "Visual degradation trend, Early-warning signal before failure",
+                "headerAlignment": "center"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 9
+          }
+        },
+        {
+          "widget": {
+            "name": "helps-maintenance-scheduling",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "38d217ca",
+                  "fields": [
+                    {
+                      "name": "risk_level",
+                      "expression": "`risk_level`"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    },
+                    {
+                      "name": "cycle",
+                      "expression": "`cycle`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "risk_level",
+                  "displayName": "Risk_level",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "cycle",
+                  "displayName": "Cycles",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_level",
+                  "legend": {
+                    "hideTitle": true,
+                    "hide": true
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "custom-order",
+                      "orderedValues": [
+                        "LOW",
+                        "HIGH",
+                        "MEDIUM"
+                      ]
+                    },
+                    "mappings": [
+                      {
+                        "value": "HIGH",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      },
+                      {
+                        "value": "LOW",
+                        "color": "#008000"
+                      },
+                      {
+                        "value": "MEDIUM",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 2
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label": {
+                  "show": false
+                },
+                "extra": [
+                  {
+                    "fieldName": "count(*)",
+                    "displayName": "Count of Engines"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "description": "Helps maintenance scheduling",
+                "title": "Risk Level Timeline",
+                "headerAlignment": "center"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 1
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "aec4b1bd",
+      "displayName": "Fleet-Level Equipment Health Monitoring",
+      "layout": [
+        {
+          "widget": {
+            "name": "total-engines-monitored",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "20f98b22",
+                  "fields": [
+                    {
+                      "name": "median(total_engines)",
+                      "expression": "MEDIAN(`total_engines`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "median(total_engines)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": false,
+                "title": "TOTAL ENGINES MONITORED",
+                "headerAlignment": "center"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "risk-distribution",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "19001484",
+                  "fields": [
+                    {
+                      "name": "sum(high_risk_engines)",
+                      "expression": "SUM(`high_risk_engines`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(high_risk_engines)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "HIGH RISK ENGINES (CRITICAL)",
+                "headerAlignment": "center"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "risk-distribution-1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "1fe2906a",
+                  "fields": [
+                    {
+                      "name": "engine_count",
+                      "expression": "`engine_count`"
+                    },
+                    {
+                      "name": "risk_level",
+                      "expression": "`risk_level`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "engine_count",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "axis": {
+                    "hideTitle": true
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_level",
+                  "legend": {
+                    "hideTitle": true,
+                    "hide": false,
+                    "position": "right"
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "LOW",
+                        "color": "#008000"
+                      },
+                      {
+                        "value": "HIGH",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "RISK DISTRIBUTION",
+                "headerAlignment": "center"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 3,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "top-10-most-risky-engines",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e584a161",
+                  "fields": [
+                    {
+                      "name": "engine_id",
+                      "expression": "`engine_id`"
+                    },
+                    {
+                      "name": "max_failure_probability",
+                      "expression": "`max_failure_probability`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "engine_id",
+                  "axis": {
+                    "title": "Engines Id's"
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "max_failure_probability",
+                  "axis": {
+                    "labelAngle": 0,
+                    "title": "Max Failure Probability"
+                  },
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    },
+                    "significantFigures": {
+                      "type": "max",
+                      "figures": 4
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "engine_id",
+                  "legend": {
+                    "position": "right",
+                    "hideTitle": true
+                  },
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "all"
+                    }
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "natural-order"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "TOP 10 MOST RISKY ENGINES",
+                "headerAlignment": "center"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 9
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "7cf5d576",
+      "displayName": "Model Monitoring & Insights",
+      "layout": [
+        {
+          "widget": {
+            "name": "prediction-distribution",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "1555ab7e",
+                  "fields": [
+                    {
+                      "name": "prediction",
+                      "expression": "`prediction`"
+                    },
+                    {
+                      "name": "prediction_count",
+                      "expression": "`prediction_count`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "prediction",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "axis": {
+                    "hideLabels": false,
+                    "title": "Prediction"
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "prediction_count",
+                  "axis": {
+                    "title": "Prediction Count"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "prediction",
+                  "legend": {
+                    "position": "right",
+                    "hide": false,
+                    "hideTitle": false
+                  },
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": 0,
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 1
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "prediction_count",
+                    "format": {
+                      "type": "number-plain",
+                      "abbreviation": "compact",
+                      "decimalPlaces": {
+                        "type": "max",
+                        "places": 2
+                      }
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Prediction Distribution",
+                "description": "How many records are predicted as Safe vs Failure Soon\n'0'---->Safe,'1'--->Failure Soon\n"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "failure-probability-distribution",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "1209ba2d",
+                  "fields": [
+                    {
+                      "name": "bin(failure_probability, binWidth=0_1)",
+                      "expression": "BIN_FLOOR(`failure_probability`, 0.1)"
+                    },
+                    {
+                      "name": "failure_probability",
+                      "expression": "`failure_probability`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "histogram",
+              "encodings": {
+                "x": {
+                  "fieldName": "bin(failure_probability, binWidth=0_1)",
+                  "axis": {
+                    "title": "Failure Probability"
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "natural-order"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "failure_probability",
+                  "axis": {
+                    "title": "Count"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 11
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 12
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Failure Probability Distribution",
+                "description": "Understand Model confidence"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "risk-trend-over-cycles",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "c110be8f",
+                  "fields": [
+                    {
+                      "name": "cycle",
+                      "expression": "`cycle`"
+                    },
+                    {
+                      "name": "avg_failure_probability",
+                      "expression": "`avg_failure_probability`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "cycle",
+                  "axis": {
+                    "title": "Cycle"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg_failure_probability",
+                  "axis": {
+                    "title": "Average Failure Probability"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Risk Trend Over Cycles",
+                "description": "Check whether risk increases as engine ages"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 11
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 11
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 12
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 21,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "risk-level-trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "67ca9613",
+                  "fields": [
+                    {
+                      "name": "risk_level",
+                      "expression": "`risk_level`"
+                    },
+                    {
+                      "name": "cycle",
+                      "expression": "`cycle`"
+                    },
+                    {
+                      "name": "engine_count",
+                      "expression": "`engine_count`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "cycle",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    },
+                    "significantFigures": {
+                      "type": "all"
+                    },
+                    "hideGroupSeparator": false
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "engine_count",
+                  "axis": {
+                    "hideGrid": false,
+                    "hideLabels": false,
+                    "title": "Engine Count"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_level",
+                  "legend": {
+                    "title": "Risk Level",
+                    "position": "right"
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "HIGH",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "description": "Risk movement across time",
+                "title": "Risk Level Trend"
+              },
+              "mark": {
+                "size": 0.7
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "prediction-vs-actua",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "2f700e78",
+                  "fields": [
+                    {
+                      "name": "predicted_label",
+                      "expression": "`predicted_label`"
+                    },
+                    {
+                      "name": "actual_label",
+                      "expression": "`actual_label`"
+                    },
+                    {
+                      "name": "count",
+                      "expression": "`count`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "actual_label",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "predicted_label",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Prediction vs Actua"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#11171C"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#11171C"
+      },
+      "widgetBorderColor": {
+        "light": "#161414",
+        "dark": "#3186CE"
+      },
+      "fontColor": {
+        "light": "#11171C",
+        "dark": "#E8ECF0"
+      },
+      "selectionColor": {
+        "light": "#051522",
+        "dark": "#8ACAFF"
+      },
+      "visualizationColors": [
+        "#077A9D",
+        "#FFAB00",
+        "#00A972",
+        "#FF3621",
+        "#8BCAE7",
+        "#AB4057",
+        "#99DDB4",
+        "#FCA4A1",
+        "#919191",
+        "#BF7080",
+        "#077A9D",
+        "#FFAB00"
+      ],
+      "widgetHeaderAlignment": "CENTER"
+    },
+    "applyModeEnabled": true
+  }
+}
