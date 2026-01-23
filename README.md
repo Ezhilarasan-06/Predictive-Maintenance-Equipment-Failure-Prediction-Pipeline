@@ -3,7 +3,7 @@
 > **“Machines don’t fail suddenly — they whisper before they scream.”**  
 This project listens to those whispers.
 
-- [📊 Data Source](#[📊-data-source)
+- [📊 Data Source](#📊-data-source)
 ---
 
 ## 🧠 Why This Project Exists
